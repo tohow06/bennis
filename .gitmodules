@@ -1,0 +1,3 @@
+[submodule "bennis_hardware_interface/third_party/cobs-c"]
+	path = bennis_hardware_interface/third_party/cobs-c
+	url = https://github.com/cmcqueen/cobs-c.git
