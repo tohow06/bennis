@@ -1,0 +1,35 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 50
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    fl_cmd:
+      type: forward_command_controller/ForwardCommandController
+    fr_cmd:
+      type: forward_command_controller/ForwardCommandController
+    rl_cmd:
+      type: forward_command_controller/ForwardCommandController
+    rr_cmd:
+      type: forward_command_controller/ForwardCommandController
+
+fl_cmd:
+  ros__parameters:
+    joints: ["left_wheel_joint"]
+    interface_name: "velocity"
+
+fr_cmd:
+  ros__parameters:
+    joints: ["right_wheel_joint"]
+    interface_name: "velocity"
+
+rl_cmd:
+  ros__parameters:
+    joints: ["left_back_wheel_joint"]
+    interface_name: "velocity"
+
+rr_cmd:
+  ros__parameters:
+    joints: ["right_back_wheel_joint"]
+    interface_name: "velocity"

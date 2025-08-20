@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:include filename="$(find bennis_description)/urdf/inertial_macros.xacro" />
+  <xacro:include filename="$(find bennis_description)/urdf/mecanum_wheel_macros.xacro" />
+
+  <xacro:property name="chassis_length" value="0.200" />
+  <xacro:property name="chassis_width" value="0.155" />
+  <xacro:property name="chassis_height" value="0.075" />
+  <xacro:property name="chassis_mass" value="1.0" />
+  <xacro:property name="wheel_radius" value="0.040" />
+  <xacro:property name="wheel_thickness" value="0.036" />
+  <xacro:property name="wheel_mass" value="0.05" />
+  <xacro:property name="wheel_offset_x" value="0.045" />
+  <xacro:property name="wheel_offset_y" value="0.084" />
+  <xacro:property name="wheel_offset_z" value="0.000" />
+
+  <material name="white">
+    <color rgba="1 1 1 1" />
+  </material>
+
+  <material name="orange">
+    <color rgba="1 0.3 0.1 1" />
+  </material>
+
+  <material name="blue">
+    <color rgba="0.2 0.2 1 1" />
+  </material>
+
+  <material name="black">
+    <color rgba="0 0 0 1" />
+  </material>
+
+  <material name="red">
+    <color rgba="1 0 0 1" />
+  </material>
+
+  <xacro:macro name="bennis_robot" params="
+    prefix
+    gazebo_ignition
+    *origin
+  ">
+
+
+    <link name="${prefix}base_footprint">
+    </link>
+
+    <!-- BASE_FOOTPRINT LINK -->
+
+    <joint name="${prefix}base_footprint_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="${prefix}base_footprint" />
+      <child link="${prefix}base_link" />
+    </joint>
+
+    <!-- BASE LINK -->
+    <link name="${prefix}base_link">
+    </link>
+
+
+    <xacro:bennis_mecanum_wheel prefix="${prefix}right_" parent="${prefix}base_link" reflect="false" hq="false" gazebo_ignition="${gazebo_ignition}"
+    xyz="${wheel_offset_x} -${wheel_offset_y} ${wheel_offset_z}">
+    </xacro:bennis_mecanum_wheel>
+
+    <xacro:bennis_mecanum_wheel prefix="${prefix}left_" parent="${prefix}base_link" reflect="true" hq="false" gazebo_ignition="${gazebo_ignition}"
+    xyz="${wheel_offset_x} ${wheel_offset_y} ${wheel_offset_z}">
+    </xacro:bennis_mecanum_wheel>
+
+    <xacro:bennis_mecanum_wheel prefix="${prefix}left_back_" parent="${prefix}base_link" reflect="false" hq="false" gazebo_ignition="${gazebo_ignition}"
+    xyz="-${wheel_offset_x} ${wheel_offset_y} ${wheel_offset_z}">
+    </xacro:bennis_mecanum_wheel>
+
+    <xacro:bennis_mecanum_wheel prefix="${prefix}right_back_" parent="${prefix}base_link" reflect="true" hq="false" gazebo_ignition="${gazebo_ignition}"
+    xyz="-${wheel_offset_x} -${wheel_offset_y} ${wheel_offset_z}">
+    </xacro:bennis_mecanum_wheel>
+
+
+    <!-- CHASSIS LINK -->
+
+    <joint name="${prefix}chassis_joint" type="fixed">
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}chassis" />
+      <origin xyz="0 0 0" />
+    </joint>
+
+    <link name="${prefix}chassis">
+      <visual>
+        <origin xyz="0 0 ${wheel_radius}" />
+        <geometry>
+          <box size="${chassis_length} ${chassis_width} ${chassis_height}" />
+        </geometry>
+        <material name="orange" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 ${wheel_radius}" />
+        <geometry>
+          <box size="${chassis_length} ${chassis_width} ${chassis_height}" />
+        </geometry>
+      </collision>
+      <xacro:inertial_box mass="0.5" x="${chassis_length}" y="${chassis_width}"
+        z="${chassis_height}">
+        <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0" />
+      </xacro:inertial_box>
+    </link>
+
+    <gazebo reference="${prefix}chassis">
+      <material>Gazebo/Orange</material>
+    </gazebo>
+
+
+  </xacro:macro>
+</robot>

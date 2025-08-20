@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="$(arg bennis_model)">
+    <xacro:arg name="bennis_model" default="bennis" />
+    <xacro:arg name="prefix" default="" />
+    <xacro:arg name="gazebo_ignition" default="false" />
+
+    <xacro:include filename="$(find bennis_description)/urdf/bennis_macro.xacro" />
+
+    <xacro:bennis_robot prefix="$(arg prefix)" gazebo_ignition="$(arg gazebo_ignition)">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:bennis_robot>
+
+    <xacro:include filename="bennis.ros2_control.xacro" />  
+    
+    <!-- <xacro:if value="$(arg gazebo_ignition)">
+        <xacro:include filename="bennis.gazebo_control.xacro" />
+    </xacro:if> -->
+
+</robot>

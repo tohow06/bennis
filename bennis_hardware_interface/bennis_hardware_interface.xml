@@ -1,0 +1,9 @@
+<library path="bennis_hardware_interface">
+  <class name="bennis_hardware_interface/BennisHardware"
+         type="bennis_hardware_interface::BennisHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ros2_control hardware interface.
+    </description>
+  </class>
+</library>

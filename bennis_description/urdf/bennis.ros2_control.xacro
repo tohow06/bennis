@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:if value="$(arg gazebo_ignition)">
+    <ros2_control name="GazeboSimSystem" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+
+      <joint name="left_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="velocity" />
+        <state_interface name="position" />
+      </joint>
+
+      <joint name="right_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="velocity" />
+        <state_interface name="position" />
+      </joint>
+
+      <joint name="left_back_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="velocity" />
+        <state_interface name="position" />
+      </joint>
+      <joint name="right_back_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="velocity" />
+        <state_interface name="position" />
+      </joint>
+    </ros2_control>
+
+  </xacro:if>
+
+  <xacro:unless value="$(arg gazebo_ignition)">
+    <ros2_control name="RealRobot" type="system">
+      <hardware>
+        <plugin>bennis_hardware_interface/BennisHardware</plugin>
+
+        <param name="device">/dev/ttyACM0</param>
+        <param name="baud_rate">115200</param>
+        <param name="timeout">50</param>
+        <param name="loop_rate">50</param>
+        <param name="enc_counts_per_rev">2048</param>
+        <param name="left_wheel_name">left_wheel_joint</param>
+        <param name="right_wheel_name">right_wheel_joint</param>
+        <param name="left_back_wheel_name">left_back_wheel_joint</param>
+        <param name="right_back_wheel_name">right_back_wheel_joint</param>
+      </hardware>
+
+      <joint name="left_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="velocity" />
+        <state_interface name="position" />
+      </joint>
+
+      <joint name="right_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="velocity" />
+        <state_interface name="position" />
+      </joint>
+
+      <joint name="left_back_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="velocity" />
+        <state_interface name="position" />
+      </joint>
+      <joint name="right_back_wheel_joint">
+        <command_interface name="velocity" />
+        <state_interface name="velocity" />
+        <state_interface name="position" />
+      </joint>
+    </ros2_control>
+  </xacro:unless>
+
+
+  <!-- ROS2 Control plugin and topic re-mapping -->
+  <gazebo>
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(find bennis_description)/config/controllers.yaml</parameters>
+      <ros>
+        <remapping>/mecanum_drive_controller/reference:=/cmd_vel</remapping>
+        <remapping>/mecanum_drive_controller/odometry:=/odom</remapping>
+        <remapping>/mecanum_drive_controller/tf_odometry:=/tf</remapping>
+      </ros>
+    </plugin>
+  </gazebo>
+
+
+
+</robot>
